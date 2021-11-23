@@ -16,58 +16,58 @@ struct field {
     char classOfShip[4];
     char direction;
 };
-struct rectangle{
+struct rectangle {
     int x1, x2, y1, y2;
 };
 
 class ShipCounter {
-   public: 
-   int CAR, BAT, DES, CRU;
+public:
+    int CAR, BAT, DES, CRU;
 
-   ShipCounter(int car, int bat, int des, int cru) {
+    ShipCounter(int car, int bat, int des, int cru) {
         CAR = car;
         BAT = bat;
         DES = des;
         CRU = cru;
     }
-   void carIn() {
-       CAR++;
-   }
-   int getCAR() {
-       return CAR;
-   }
-   int getBAT() {
-       return BAT;
-   }
-   void batIn() {
-       BAT++;
-   }
-   int getDES() {
-       return DES;
-   }
-   void desIn() {
-       DES++;
-   }
-   int getCRU() {
-       return CRU;
-   }
-   void cruIn() {
-       CRU++;
-   }
+    void carIn() {
+        CAR++;
+    }
+    int getCAR() {
+        return CAR;
+    }
+    int getBAT() {
+        return BAT;
+    }
+    void batIn() {
+        BAT++;
+    }
+    int getDES() {
+        return DES;
+    }
+    void desIn() {
+        DES++;
+    }
+    int getCRU() {
+        return CRU;
+    }
+    void cruIn() {
+        CRU++;
+    }
 
-   void setAll(int car, int bat, int des, int cru) {
-       CAR = car;
-       BAT = bat;
-       DES = des;
-       CRU = cru;
-   }
+    void setAll(int car, int bat, int des, int cru) {
+        CAR = car;
+        BAT = bat;
+        DES = des;
+        CRU = cru;
+    }
 };
 
 
-void initialize(field board[21][10], rectangle *r1, rectangle *r2){
+void initialize(field board[21][10], rectangle* r1, rectangle* r2) {
     for (int yy = 0; yy < 21; yy++) {
         for (int xx = 0; xx < 10; xx++) {
-           board[yy][xx].state = ' ';
+            board[yy][xx].state = ' ';
         }
     }
 
@@ -80,7 +80,7 @@ void initialize(field board[21][10], rectangle *r1, rectangle *r2){
     (*r2).y1 = 0;
     (*r2).x2 = 20;
     (*r2).y2 = 9;
-    
+
 
 }
 
@@ -107,22 +107,22 @@ void incrementShipCounter(char shipClass[3], ShipCounter* shipCounter) {
     else if (!strcmp("DES", shipClass)) {
         (*shipCounter).desIn();
     }
-    else if (!strcmp("CRU", shipClass)){ 
+    else if (!strcmp("CRU", shipClass)) {
         (*shipCounter).cruIn();
     }
 }
-bool ifShipAlreadyPresent(char shipClass[3], int numberOfShip, ShipCounter *shipCounter) {
+bool ifShipAlreadyPresent(char shipClass[3], int numberOfShip, ShipCounter* shipCounter) {
     if (!strcmp("CAR", shipClass)) {
         if (numberOfShip + 1 <= (*shipCounter).getCAR()) {
             return true;
         }
-       // (*shipCounter).carIn();
+        // (*shipCounter).carIn();
     }
     else if (!strcmp("BAT", shipClass)) {
         if (numberOfShip + 1 <= (*shipCounter).getBAT()) {
             return true;
         }
-       // (*shipCounter).batIn();
+        // (*shipCounter).batIn();
     }
     else if (!strcmp("DES", shipClass)) {
         if (numberOfShip + 1 <= (*shipCounter).getDES()) {
@@ -141,28 +141,28 @@ bool ifShipAlreadyPresent(char shipClass[3], int numberOfShip, ShipCounter *ship
 }
 
 bool ifAllShipOfTheClassAlreadySet(ShipCounter shipCounter, char shipClass[3], ShipCounter max) {
-    if ((!strcmp("CAR", shipClass) && shipCounter.getCAR() == max.getCAR() )
-        || (!strcmp("BAT", shipClass) && shipCounter.getBAT() == max.getBAT() )
-        || (!strcmp("DES", shipClass) && shipCounter.getDES() == max.getDES() )
-        || (!strcmp("CRU", shipClass) && shipCounter.getCRU() == max.getCRU() )) return true;
+    if ((!strcmp("CAR", shipClass) && shipCounter.getCAR() == max.getCAR())
+        || (!strcmp("BAT", shipClass) && shipCounter.getBAT() == max.getBAT())
+        || (!strcmp("DES", shipClass) && shipCounter.getDES() == max.getDES())
+        || (!strcmp("CRU", shipClass) && shipCounter.getCRU() == max.getCRU())) return true;
 
-        return false;
+    return false;
 }
 bool ifAllShipsAlreadySet(ShipCounter shipCounter, ShipCounter max) {
     if ((shipCounter.getCAR() == max.getCAR())
         && (shipCounter.getBAT() == max.getBAT())
         && (shipCounter.getDES() == max.getDES())
         && (shipCounter.getCRU() == max.getCRU())) {
-     return true;
+        return true;
     }
 
-       
+
     else
-    return false;
+        return false;
 }
 void shoot(field board[21][10], int x, int y) {
-    
- if ((board[x][y]).state == '+')
+
+    if ((board[x][y]).state == '+')
         board[x][y].state = 'x';
 }
 
@@ -173,7 +173,7 @@ int howManyRemaining(field board[21][10], char player) {
             if (board[yy][xx].state == '+' && board[yy][xx].player == player) howMany++;
         }
     }
-    
+
     return howMany;
 }
 int howManyDestroyed(field board[21][10], char player) {
@@ -194,30 +194,40 @@ void print0(field board[21][10]) {
     }
 }
 bool isInRectangle(int x, int y, rectangle r) {
-    if (x >= r.x1  && x <= r.x2 && y >= r.y1 && y <= r.y2 ) return true;
+    if (x >= r.x1 && x <= r.x2 && y >= r.y1 && y <= r.y2) return true;
     return false;
 }
 bool ifTooCloseToOthers(int y, int x, int i, int shipSize, field board[21][10], int boardSizeX, int boardSizeY) {
 
     int ile = 0;
     if (board[x][y].state == '+') return true;
-    
-   /*board[x][y].state = '%';
-    print0(board);
-    board[x][y].state = ' ';*/
-    if (x != 0 and board[x - 1][y].state == '+') {  ile++; }
-    if (x != boardSizeY - 1 and board[x + 1][y].state == '+') {  ile++; }
-    if (y != 0 and board[x][y - 1].state == '+'){ /*cout << " left " << i << endl;*/ ile++; }
-    if (y != boardSizeX - 1 and board[x][y+1].state == '+'){ile++;}
+
+    /*board[x][y].state = '%';
+     print0(board);
+     board[x][y].state = ' ';*/
+    if (x != 0 and board[x - 1][y].state == '+') { ile++; }
+    if (x != boardSizeY - 1 and board[x + 1][y].state == '+') { ile++; }
+    if (y != 0 and board[x][y - 1].state == '+') { /*cout << " left " << i << endl;*/ ile++; }
+    if (y != boardSizeX - 1 and board[x][y + 1].state == '+') { ile++; }
 
     if (i == 0) { ile++; }
     //cout << ile;
     if (ile > 1) return true;
     return false;
 }
+bool isSbAround(field board[21][10], int x, int y, char player) {
+
+    char oponent;
+    player == 'A' ? oponent = 'B' : oponent = 'A';
+
+    if (board[y + 1][x].player == oponent || board[y - 1][x].player == oponent
+        || board[y][x + 1].player == oponent || board[y][x - 1].player == oponent)
+        return true;
+    else return false;
+}
 int main()
 {
-    field board [21][10];
+    field board[21][10];
     int boardSizeY = 10;
     int boardSizeX = 21;
     char command[16], shipClass[4], lastCommand[16];
@@ -241,31 +251,32 @@ int main()
 
 
     while (cin >> command && error == false) {
-       
-        if (strcmp("PLACE_SHIP", command)==0){
+
+        if (strcmp("PLACE_SHIP", command) == 0) {
             cin >> x >> y >> direction >> numberOfShip >> shipClass;
             int sizeOfShip = getSizeOfShip(shipClass);
 
-            if (((currentPlayer == 'A') && (!isInRectangle(x,y, rectangleA) || (direction == 'N' && !isInRectangle(x+sizeOfShip-1, y, rectangleA)))
-                || ((currentPlayer == 'B') && (!isInRectangle(x,y, rectangleB) || (direction == 'S' && !isInRectangle(x- sizeOfShip+1, y , rectangleB)))))) {
-                cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": NOT IN STARTING POSITION" << endl; 
+            if (((currentPlayer == 'A') && (!isInRectangle(x, y, rectangleA) || (direction == 'N' && !isInRectangle(x + sizeOfShip - 1, y, rectangleA)))
+                || ((currentPlayer == 'B') && (!isInRectangle(x, y, rectangleB) || (direction == 'S' && !isInRectangle(x - sizeOfShip + 1, y, rectangleB)))))) {
+                cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": NOT IN STARTING POSITION" << endl;
                 error = true;
                 break;
             }
-            
+
             if (direction == 'N') {
                 for (int i = 0; i < sizeOfShip; i++) {
-                    if(ifTooCloseToOthers(y, x+i , i, sizeOfShip, board, SIZEX, SIZEY )) tooCloseError = true;
+                    if (ifTooCloseToOthers(y, x + i, i, sizeOfShip, board, SIZEX, SIZEY)) tooCloseError = true;
                     if (board[x + i][y].reef == true) onReefError = true;
-                    board[x+i][y].state = '+';
+                    board[x + i][y].state = '+';
                     board[x + i][y].player = currentPlayer;
                     board[x + i][y].numberI = numberOfShip;
                     strcpy_s(board[x + i][y].classOfShip, shipClass);
                     board[x + i][y].direction = direction;
                 }
-            }else if (direction == 'S') {
+            }
+            else if (direction == 'S') {
                 for (int i = 0; i < sizeOfShip; i++) {
-                    if (ifTooCloseToOthers(y, x-i, i, sizeOfShip, board, SIZEX, SIZEY)) tooCloseError = true;
+                    if (ifTooCloseToOthers(y, x - i, i, sizeOfShip, board, SIZEX, SIZEY)) tooCloseError = true;
                     if (board[x - i][y].reef == true) onReefError = true;
                     board[x - i][y].state = '+';
                     board[x - i][y].player = currentPlayer;
@@ -273,22 +284,24 @@ int main()
                     strcpy_s(board[x - i][y].classOfShip, shipClass);
                     board[x - i][y].direction = direction;
                 }
-            }else if (direction == 'W') {
+            }
+            else if (direction == 'W') {
                 for (int i = 0; i < sizeOfShip; i++) {
-                    if (ifTooCloseToOthers(y+i, x, i, sizeOfShip, board, SIZEX, SIZEY)) tooCloseError = true;
+                    if (ifTooCloseToOthers(y + i, x, i, sizeOfShip, board, SIZEX, SIZEY)) tooCloseError = true;
                     if (board[x][y + i].reef == true) onReefError = true;
-                    board[x][y+i].state = '+';
-                    board[x][y+i].player = currentPlayer;
-                    board[x][y+i].numberI = numberOfShip;
-                    strcpy_s(board[x][y+i].classOfShip, shipClass);
-                    board[x][y+i].direction = direction;
+                    board[x][y + i].state = '+';
+                    board[x][y + i].player = currentPlayer;
+                    board[x][y + i].numberI = numberOfShip;
+                    strcpy_s(board[x][y + i].classOfShip, shipClass);
+                    board[x][y + i].direction = direction;
                 }
-            }else{
+            }
+            else {
                 for (int i = 0; i < sizeOfShip; i++) {
-                    if (ifTooCloseToOthers(y-i, x , i, sizeOfShip, board, SIZEX, SIZEY)) tooCloseError = true;
+                    if (ifTooCloseToOthers(y - i, x, i, sizeOfShip, board, SIZEX, SIZEY)) tooCloseError = true;
                     if (board[x][y - i].reef == true) onReefError = true;
-                    board[x][y-i].state = '+';
-                    board[x][y-i].player = currentPlayer;
+                    board[x][y - i].state = '+';
+                    board[x][y - i].player = currentPlayer;
                     board[x][y - i].numberI = numberOfShip;
                     strcpy_s(board[x][y - i].classOfShip, shipClass);
                     board[x][y - i].direction = direction;
@@ -303,9 +316,9 @@ int main()
                 cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": PLACING SHIP ON REEF" << endl;
                 break;
             }
-            
+
             if (currentPlayer == 'B') {
-       
+
                 //czy pokolej stawiane
                 if (ifShipAlreadyPresent(shipClass, numberOfShip, &shipCounterB)) {
                     cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": SHIP ALREADY PRESENT" << endl;
@@ -319,25 +332,25 @@ int main()
                     break;
                 }
 
-                incrementShipCounter(shipClass, &shipCounterB);   
+                incrementShipCounter(shipClass, &shipCounterB);
             }
             else { //player a
-       
-            
+
+
             //czy pokolej stawiane
-            if (ifShipAlreadyPresent(shipClass, numberOfShip, &shipCounterA)) {
-                cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": SHIP ALREADY PRESENT" << endl;
-                error = true;
-                break;
+                if (ifShipAlreadyPresent(shipClass, numberOfShip, &shipCounterA)) {
+                    cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": SHIP ALREADY PRESENT" << endl;
+                    error = true;
+                    break;
+                }
+                //czy mamskymalna ilosc
+                if (ifAllShipOfTheClassAlreadySet(shipCounterA, shipClass, maxAmountOfShipA)) {
+                    cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": ALL SHIPS OF THE CLASS ALREADY SET" << endl;
+                    error = true;
+                    break;
+                }
+                incrementShipCounter(shipClass, &shipCounterA);
             }
-            //czy mamskymalna ilosc
-            if (ifAllShipOfTheClassAlreadySet(shipCounterA, shipClass, maxAmountOfShipA)) {
-                cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": ALL SHIPS OF THE CLASS ALREADY SET" << endl;
-                error = true;
-                break;
-            }
-            incrementShipCounter(shipClass, &shipCounterA);
-            } 
         }
 
         else if (strcmp("PRINT", command) == 0) {
@@ -354,23 +367,23 @@ int main()
                 cout << "INVALID OPERATION \"[playerA] \": THE OTHER PLAYER EXPECTED" << endl;
                 break;
             }
-                
+
         }
         else if (strcmp("[playerB]", command) == 0) {
-            currentPlayer = 'B'; 
+            currentPlayer = 'B';
             if (!strcmp("[playerB]", lastCommand)) {
                 cout << "INVALID OPERATION \"[playerB] \": THE OTHER PLAYER EXPECTED" << endl;
                 break;
             }
-                
+
         }
         else if (!strcmp("SHOOT", command)) {
-            cin>>x>>y;
-           
-            if (!ifAllShipsAlreadySet(shipCounterA, maxAmountOfShipA) || !ifAllShipsAlreadySet(shipCounterB, maxAmountOfShipB)){
-                    cout << "INVALID OPERATION \"SHOOT " << x << " " << y << "\": NOT ALL SHIPS PLACED" << endl;
-                    break;
-             }
+            cin >> x >> y;
+
+            if (!ifAllShipsAlreadySet(shipCounterA, maxAmountOfShipA) || !ifAllShipsAlreadySet(shipCounterB, maxAmountOfShipB)) {
+                cout << "INVALID OPERATION \"SHOOT " << x << " " << y << "\": NOT ALL SHIPS PLACED" << endl;
+                break;
+            }
 
             if (x <= boardSizeX && y <= boardSizeY)
                 shoot(board, x, y);
@@ -380,7 +393,7 @@ int main()
             }
         }
         else if (!strcmp("SET_FLEET", command)) {
-            
+
             int car, bat, des, cru;
             cin >> playerTemp >> car >> bat >> cru >> des;
 
@@ -391,93 +404,93 @@ int main()
 
             cin >> playerTemp >> x >> y >> direction >> numberOfShip >> shipClass;
             int sizeOfShip = getSizeOfShip(shipClass);
-            char *sequence = new char[sizeOfShip];
+            char* sequence = new char[sizeOfShip];
             cin >> sequence;
 
-                if (direction == 'N') {
-                    for (int i = 0; i < sizeOfShip; i++) {
-                        if (ifTooCloseToOthers(y, x + i, i, sizeOfShip, board, SIZEX, SIZEY)) tooCloseError = true;
-                        if (board[x + i][y].reef == true) onReefError = true;
-                        sequence[i] == '1' ? board[x + i][y].state = '+' : board[x + i][y].state = 'x';
-                        board[x + i][y].player = playerTemp;
-                        board[x + i][y].direction = direction;
-                    }
+            if (direction == 'N') {
+                for (int i = 0; i < sizeOfShip; i++) {
+                    if (ifTooCloseToOthers(y, x + i, i, sizeOfShip, board, SIZEX, SIZEY)) tooCloseError = true;
+                    if (board[x + i][y].reef == true) onReefError = true;
+                    sequence[i] == '1' ? board[x + i][y].state = '+' : board[x + i][y].state = 'x';
+                    board[x + i][y].player = playerTemp;
+                    board[x + i][y].direction = direction;
                 }
-                else if (direction == 'S') {
-                    for (int i = 0; i < sizeOfShip; i++) {
-                        if (ifTooCloseToOthers(y, x - i, i, sizeOfShip, board, SIZEX, SIZEY)) tooCloseError = true;
-                        if (board[x - i][y].reef == true) onReefError = true;
-                        sequence[i] == '1' ? board[x - i][y].state = '+' : board[x - i][y].state = 'x';
-                        board[x - i][y].player = playerTemp;
-                        board[x - i][y].direction = direction;
-                    }
+            }
+            else if (direction == 'S') {
+                for (int i = 0; i < sizeOfShip; i++) {
+                    if (ifTooCloseToOthers(y, x - i, i, sizeOfShip, board, SIZEX, SIZEY)) tooCloseError = true;
+                    if (board[x - i][y].reef == true) onReefError = true;
+                    sequence[i] == '1' ? board[x - i][y].state = '+' : board[x - i][y].state = 'x';
+                    board[x - i][y].player = playerTemp;
+                    board[x - i][y].direction = direction;
                 }
-                else if (direction == 'W') {
-                    for (int i = 0; i < sizeOfShip; i++) {
-                        if (ifTooCloseToOthers(y + i, x, i, sizeOfShip, board, SIZEX, SIZEY)) tooCloseError = true;
-                        if (board[x][y + i].reef == true) onReefError = true;
-                        sequence[i] == '1' ? board[x][y + i].state = '+' : board[x][y + i].state = 'x';
-                        board[x][y + i].player = playerTemp;
-                        board[x][y + i].direction = direction;
-                    }
+            }
+            else if (direction == 'W') {
+                for (int i = 0; i < sizeOfShip; i++) {
+                    if (ifTooCloseToOthers(y + i, x, i, sizeOfShip, board, SIZEX, SIZEY)) tooCloseError = true;
+                    if (board[x][y + i].reef == true) onReefError = true;
+                    sequence[i] == '1' ? board[x][y + i].state = '+' : board[x][y + i].state = 'x';
+                    board[x][y + i].player = playerTemp;
+                    board[x][y + i].direction = direction;
                 }
-                else {
-                    for (int i = 0; i < sizeOfShip; i++) {
-                        if (ifTooCloseToOthers(y - i, x, i, sizeOfShip, board, SIZEX, SIZEY)) tooCloseError = true;
-                        if (board[x][y - i].reef == true) onReefError = true;
-                        sequence[i] == '1' ? board[x][y - i].state = '+' : board[x][y - i].state = 'x';
-                        board[x][y - i].player = playerTemp;
-                        board[x][y - i].direction = direction;
-                    }
+            }
+            else {
+                for (int i = 0; i < sizeOfShip; i++) {
+                    if (ifTooCloseToOthers(y - i, x, i, sizeOfShip, board, SIZEX, SIZEY)) tooCloseError = true;
+                    if (board[x][y - i].reef == true) onReefError = true;
+                    sequence[i] == '1' ? board[x][y - i].state = '+' : board[x][y - i].state = 'x';
+                    board[x][y - i].player = playerTemp;
+                    board[x][y - i].direction = direction;
                 }
+            }
 
-                if (tooCloseError) {
-                    cout << "INVALID OPERATION \"SHIP " << playerTemp << " " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass <<" "<< sequence << "\": PLACING SHIP TOO CLOSE TO OTHER SHIP" << endl;
-                    break;
-                }
-                if (onReefError) {
-                    cout << "INVALID OPERATION \"SHIP "<<playerTemp<< " " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass<< " " << sequence << "\": PLACING SHIP ON REEF" << endl;
-                    break;
-                }
-                
+            if (tooCloseError) {
+                cout << "INVALID OPERATION \"SHIP " << playerTemp << " " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << " " << sequence << "\": PLACING SHIP TOO CLOSE TO OTHER SHIP" << endl;
+                break;
+            }
+            if (onReefError) {
+                cout << "INVALID OPERATION \"SHIP " << playerTemp << " " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << " " << sequence << "\": PLACING SHIP ON REEF" << endl;
+                break;
+            }
 
-                {
-                    if (playerTemp == 'B') {
 
-                        //czy pokolej stawiane
-                        if (ifShipAlreadyPresent(shipClass, numberOfShip, &shipCounterB)) {
-                            cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": SHIP ALREADY PRESENT" << endl;
-                            error = true;
-                            break;
-                        }
-                        //czy mamskymalna ilosc
-                        if (ifAllShipOfTheClassAlreadySet(shipCounterB, shipClass, maxAmountOfShipB)) {
-                            cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": ALL SHIPS OF THE CLASS ALREADY SET" << endl;
-                            error = true;
-                            break;
-                        }
-                        incrementShipCounter(shipClass, &shipCounterB);
-                    }
-                    else { //player a
-
+            {
+                if (playerTemp == 'B') {
 
                     //czy pokolej stawiane
-                        if (ifShipAlreadyPresent(shipClass, numberOfShip, &shipCounterA)) {
-                            cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": SHIP ALREADY PRESENT" << endl;
-                            error = true;
-                            break;
-                        }
-                        //czy mamskymalna ilosc
-                        if (ifAllShipOfTheClassAlreadySet(shipCounterA, shipClass, maxAmountOfShipA)) {
-                            cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": ALL SHIPS OF THE CLASS ALREADY SET" << endl;
-                            error = true;
-                            break;
-                        }
-                        incrementShipCounter(shipClass, &shipCounterA);
+                    if (ifShipAlreadyPresent(shipClass, numberOfShip, &shipCounterB)) {
+                        cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": SHIP ALREADY PRESENT" << endl;
+                        error = true;
+                        break;
                     }
+                    //czy mamskymalna ilosc
+                    if (ifAllShipOfTheClassAlreadySet(shipCounterB, shipClass, maxAmountOfShipB)) {
+                        cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": ALL SHIPS OF THE CLASS ALREADY SET" << endl;
+                        error = true;
+                        break;
+                    }
+                    incrementShipCounter(shipClass, &shipCounterB);
                 }
-               // print0(board);
-            
+                else { //player a
+
+
+                //czy pokolej stawiane
+                    if (ifShipAlreadyPresent(shipClass, numberOfShip, &shipCounterA)) {
+                        cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": SHIP ALREADY PRESENT" << endl;
+                        error = true;
+                        break;
+                    }
+                    //czy mamskymalna ilosc
+                    if (ifAllShipOfTheClassAlreadySet(shipCounterA, shipClass, maxAmountOfShipA)) {
+                        cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": ALL SHIPS OF THE CLASS ALREADY SET" << endl;
+                        error = true;
+                        break;
+                    }
+                    incrementShipCounter(shipClass, &shipCounterA);
+                }
+            }
+            // print0(board);
+
         }
         else if (!strcmp("NEXT_PLAYER", command)) {
             cin >> currentPlayer;
@@ -511,67 +524,68 @@ int main()
                     }
                 }
             }
-                cout << "copy  ------------------" << endl;
-                print0(copy);
-                cout << "------------------" << endl;
+            /*cout << "copy  ------------------" << endl;
+            print0(copy);
+            cout << "------------------" << endl;*/
 
 
-            if (direction == 'F') { 
-               
+            if (direction == 'F') {
+
                 for (int yy = 0; yy < 21; yy++) {
                     for (int xx = 0; xx < 10; xx++) {
 
-                        if (copy[yy][xx].numberI == numberOfShip  && !strcmp(copy[yy][xx].classOfShip, shipClass) && copy[yy][xx].player == currentPlayer) {
+                        if (copy[yy][xx].numberI == numberOfShip && !strcmp(copy[yy][xx].classOfShip, shipClass) && copy[yy][xx].player == currentPlayer) {
                             if (/*yy < 20 &&*/ copy[yy][xx].state == 'j') {
                                 if (copy[yy][xx].direction == 'N') {
                                     board[yy - 1][xx] = copy[yy][xx];
-                                    board[yy-1][xx].state = '+';
+                                    board[yy - 1][xx].state = '+';
                                 }
                                 else if (copy[yy][xx].direction == 'W') {
-                                   board[yy][xx-1] = copy[yy][xx];
-                                   board[yy][xx-1].state = '+';
+                                    board[yy][xx - 1] = copy[yy][xx];
+                                    board[yy][xx - 1].state = '+';
                                 }
                                 else if (copy[yy][xx].direction == 'E') {
                                     board[yy][xx + 1] = copy[yy][xx];
                                     board[yy][xx + 1].state = '+';
                                 }
-                                else if (copy[yy][xx].direction == 'S' ) {
-                                    board[yy+1][xx] = copy[yy][xx];
-                                    board[yy+1][xx].state = '+';
+                                else if (copy[yy][xx].direction == 'S') {
+                                    board[yy + 1][xx] = copy[yy][xx];
+                                    board[yy + 1][xx].state = '+';
                                 }
-                            } 
+                            }
                         }
                     }
                 }
-               
+
             }
             else if (direction == 'L') {
                 flag = true;
                 for (int yy = 0; yy < 21 && flag; yy++) {
                     for (int xx = 0; xx < 10; xx++) {
                         if (copy[yy][xx].numberI == numberOfShip && !strcmp(copy[yy][xx].classOfShip, shipClass) && copy[yy][xx].player == currentPlayer) {
-                            for (int i = 0; i < getSizeOfShip(shipClass); i++) {    
+                            for (int i = 0; i < getSizeOfShip(shipClass); i++) {
                                 if (copy[yy][xx].direction == 'N') {
-                                   // cout << "here " << i << " ";
-                                    
+                                    // cout << "here " << i << " ";
+
                                     board[yy][xx - i] = copy[yy][xx];
                                     board[yy][xx - i].direction = 'E';
                                     board[yy][xx - i].state = '+';
                                 }
                                 else if (copy[yy][xx].direction == 'E') {
-                                    board[yy+i][xx-1] = copy[yy][xx];
-                                    board[yy+i][xx-1].direction = 'S';
-                                    board[yy+i][xx-1].state = '+';
+                                    board[yy + i][xx - 1] = copy[yy][xx];
+                                    board[yy + i][xx - 1].direction = 'S';
+                                    board[yy + i][xx - 1].state = '+';
                                 }
                                 else if (copy[yy][xx].direction == 'S') {
-                                    board[yy][xx+1+i] = copy[yy][xx];
-                                    board[yy][xx+1+i].direction = 'W';
-                                    board[yy][xx+1+i].state = '+';
+                                    board[yy][xx + 1 + i] = copy[yy][xx];
+                                    board[yy][xx + 1 + i].direction = 'W';
+                                    board[yy][xx + 1 + i].state = '+';
                                 }
                                 else if (copy[yy][xx].direction == 'W') {
-                                    board[yy - i][xx - 1] = copy[yy][xx];
-                                    board[yy - i][xx - 1].direction = 'N';
-                                    board[yy - i][xx - 1 ].state = '+';
+                                    if (isSbAround(board, xx, yy - i + 1, currentPlayer)) tooCloseError = true;
+                                    board[yy - i + 1][xx] = copy[yy][xx];
+                                    board[yy - i + 1][xx].direction = 'N';
+                                    board[yy - i + 1][xx].state = '+';
                                 }
                             }
                             flag = false;
@@ -603,16 +617,19 @@ int main()
                     }
                 }
             }
- cout << "real  ------------------" << endl;
-                print0(board);
-                cout << "------------------" << endl;
-
+            /*cout << "real  ------------------" << endl;
+                           print0(board);
+                           cout << "------------------" << endl;*/
+            if (tooCloseError) {
+                cout << "INVALID OPERATION \"MOVE " << numberOfShip << " " << shipClass << " " << direction<< "\": PLACING SHIP TOO CLOSE TO OTHER SHIP" << endl;
+                break;
+            }
 
         }
 
         strncpy_s(lastCommand, command, 16);
         //chceck if sb won
-        if (howManyRemaining(board, 'A') == 0 && howManyDestroyed(board, 'A') > 0 ){
+        if (howManyRemaining(board, 'A') == 0 && howManyDestroyed(board, 'A') > 0) {
             cout << "B won" << endl;
             break;
         }
