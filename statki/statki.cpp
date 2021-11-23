@@ -234,7 +234,7 @@ int main()
     int x, y, numberOfShip;
     char direction, mode;
     bool error = false;
-    bool tooCloseError = false, onReefError = false;
+    bool tooCloseError = false, onReefError = false, wentFromBoardError = false;
     bool flag;
 
     char currentPlayer = 'A';
@@ -537,18 +537,23 @@ int main()
                         if (copy[yy][xx].numberI == numberOfShip && !strcmp(copy[yy][xx].classOfShip, shipClass) && copy[yy][xx].player == currentPlayer) {
                             if (/*yy < 20 &&*/ copy[yy][xx].state == 'j') {
                                 if (copy[yy][xx].direction == 'N') {
+                                    if (isSbAround(board, xx, yy-1, currentPlayer)) tooCloseError = true;
                                     board[yy - 1][xx] = copy[yy][xx];
                                     board[yy - 1][xx].state = '+';
                                 }
                                 else if (copy[yy][xx].direction == 'W') {
+                                    if (isSbAround(board, xx-1, yy, currentPlayer)) tooCloseError = true;
+                                    if (yy <0 || xx - 1 < 0 || xx - 1 > SIZEX || yy>SIZEY) wentFromBoardError = true;
                                     board[yy][xx - 1] = copy[yy][xx];
                                     board[yy][xx - 1].state = '+';
                                 }
                                 else if (copy[yy][xx].direction == 'E') {
+                                    if (isSbAround(board, xx + 1, yy, currentPlayer)) tooCloseError = true;
                                     board[yy][xx + 1] = copy[yy][xx];
                                     board[yy][xx + 1].state = '+';
                                 }
                                 else if (copy[yy][xx].direction == 'S') {
+                                    if (isSbAround(board, xx, yy + 1, currentPlayer)) tooCloseError = true;
                                     board[yy + 1][xx] = copy[yy][xx];
                                     board[yy + 1][xx].state = '+';
                                 }
@@ -565,18 +570,19 @@ int main()
                         if (copy[yy][xx].numberI == numberOfShip && !strcmp(copy[yy][xx].classOfShip, shipClass) && copy[yy][xx].player == currentPlayer) {
                             for (int i = 0; i < getSizeOfShip(shipClass); i++) {
                                 if (copy[yy][xx].direction == 'N') {
-                                    // cout << "here " << i << " ";
-
+                                    if (isSbAround(board, xx - i, yy, currentPlayer)) tooCloseError = true;
                                     board[yy][xx - i] = copy[yy][xx];
                                     board[yy][xx - i].direction = 'E';
                                     board[yy][xx - i].state = '+';
                                 }
                                 else if (copy[yy][xx].direction == 'E') {
+                                    if (isSbAround(board, xx -1, yy + i, currentPlayer)) tooCloseError = true;
                                     board[yy + i][xx - 1] = copy[yy][xx];
                                     board[yy + i][xx - 1].direction = 'S';
                                     board[yy + i][xx - 1].state = '+';
                                 }
                                 else if (copy[yy][xx].direction == 'S') {
+                                    if (isSbAround(board, xx + 1 + i, yy, currentPlayer)) tooCloseError = true;
                                     board[yy][xx + 1 + i] = copy[yy][xx];
                                     board[yy][xx + 1 + i].direction = 'W';
                                     board[yy][xx + 1 + i].state = '+';
@@ -601,15 +607,29 @@ int main()
                         if (copy[yy][xx].numberI == numberOfShip && !strcmp(copy[yy][xx].classOfShip, shipClass) && copy[yy][xx].player == currentPlayer) {
                             for (int i = 0; i < getSizeOfShip(shipClass); i++) {
                                 if (copy[yy][xx].direction == 'N') {
+                                    if (isSbAround(board, xx+1, yy, currentPlayer)) tooCloseError = true;
                                     board[yy][xx + i] = copy[yy][xx];
                                     board[yy][xx + i].direction = 'W';
                                     board[yy][xx + i].state = '+';
                                 }
                                 if (copy[yy][xx].direction == 'W') {
+                                    if (isSbAround(board, xx + 1, yy -i, currentPlayer)) tooCloseError = true;
+                                    board[yy - i][xx + 1] = copy[yy][xx];
+                                    board[yy - i][xx + 1].direction = 'N';
+                                    board[yy - i][xx + 1].state = '+';
+                                }//_________________________________________ TO NIE DZIALA WGL
+                                if (copy[yy][xx].direction == 'S') {
+                                    if (isSbAround(board, xx + 1, yy - i, currentPlayer)) tooCloseError = true;
                                     board[yy - i][xx + 1] = copy[yy][xx];
                                     board[yy - i][xx + 1].direction = 'N';
                                     board[yy - i][xx + 1].state = '+';
                                 }
+                                if (copy[yy][xx].direction == 'E') {
+                                    if (isSbAround(board, xx + 1, yy - i, currentPlayer)) tooCloseError = true;
+                                    board[yy - i][xx + 1] = copy[yy][xx];
+                                    board[yy - i][xx + 1].direction = 'N';
+                                    board[yy - i][xx + 1].state = '+';
+                                }//____________________________
                             }
                             flag = false;
                             break;
@@ -622,6 +642,10 @@ int main()
                            cout << "------------------" << endl;*/
             if (tooCloseError) {
                 cout << "INVALID OPERATION \"MOVE " << numberOfShip << " " << shipClass << " " << direction<< "\": PLACING SHIP TOO CLOSE TO OTHER SHIP" << endl;
+                break;
+            }
+            if (wentFromBoardError) {
+                cout << "INVALID OPERATION \"MOVE " << numberOfShip << " " << shipClass << " " << direction << "\": SHIP WENT FROM BOARD" << endl;
                 break;
             }
 
