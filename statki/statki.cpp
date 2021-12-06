@@ -226,8 +226,6 @@ bool ifAllShipsAlreadySet(ShipCounter shipCounter, ShipCounter max) {
         && (shipCounter.getCRU() == max.getCRU())) {
         return true;
     }
-
-
     else
         return false;
 }
@@ -344,8 +342,6 @@ void printPlayerPerspective(field board[], int boardSizeX, int boardSizeY, char 
     for (int i = 0; i < boardSizeX * boardSizeY; i++) {
         if (board[i].player == player && board[i].radar == true) {
             int range = getSizeOfShip(board[i].classOfShip);
-            // cout << range;
-
             int x = i % boardSizeX;
             int y = i / boardSizeX;
             float distance;
@@ -371,12 +367,6 @@ void printPlayerPerspective(field board[], int boardSizeX, int boardSizeY, char 
         }
         cout << endl;
     }
-
-
-
-
-
-    //float distance = sqrt(pow(abs(y - cannonY), 2) + pow(abs(x - cannonX), 2));
 
     delete[] boardTemp;
 }
@@ -449,8 +439,6 @@ int main()
                 error = true;
                 break;
             }
-
-
 
             if (direction == 'N') {
                 for (int i = 0; i < sizeOfShip; i++) {
@@ -556,7 +544,7 @@ int main()
 
         else if (strcmp("PRINT", command) == 0) {
             cin >> mode;
-            if (mode == '0') {/*!strcmp("[playerB]", lastCommand) || !strcmp("[playerA]", lastCommand)*/
+            if (mode == '0') {
                 if (!state)  printPlayerPerspective(board, boardSizeX, boardSizeY, currentPlayer);
                 else print0(board, boardSizeY, boardSizeX);
             }
@@ -628,10 +616,6 @@ int main()
                         break;
                     }
                 }
-
-
-
-                // getIndexOfCannon()
                 shoot(board, x, y, boardSizeX);
 
             }
@@ -721,7 +705,6 @@ int main()
                 }
                 else { //player a
 
-
                 //czy pokolej stawiane
                     if (ifShipAlreadyPresent(shipClass, numberOfShip, &shipCounterA)) {
                         cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": SHIP ALREADY PRESENT" << endl;
@@ -737,8 +720,6 @@ int main()
                     incrementShipCounter(shipClass, &shipCounterA);
                 }
             }
-            // print0(board);
-
         }
         else if (!strcmp("NEXT_PLAYER", command)) {
             cin >> currentPlayer;
@@ -898,9 +879,7 @@ int main()
                     }
                 }
             }
-            /*cout << "real  ------------------" << endl;
-                           print0(board);
-                           cout << "------------------" << endl;*/
+            
             if (tooCloseError) {
                 cout << "INVALID OPERATION \"MOVE " << numberOfShip << " " << shipClass << " " << direction << "\": PLACING SHIP TOO CLOSE TO OTHER SHIP" << endl;
                 break;
