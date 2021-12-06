@@ -203,31 +203,11 @@ void incrementShipCounter(char shipClass[3], ShipCounter* shipCounter) {
     }
 }
 bool ifShipAlreadyPresent(char shipClass[3], int numberOfShip, ShipCounter* shipCounter) {
-    if (!strcmp("CAR", shipClass)) {
-        if (numberOfShip + 1 <= (*shipCounter).getCAR()) {
-            return true;
-        }
-        // (*shipCounter).carIn();
-    }
-    else if (!strcmp("BAT", shipClass)) {
-        if (numberOfShip + 1 <= (*shipCounter).getBAT()) {
-            return true;
-        }
-        // (*shipCounter).batIn();
-    }
-    else if (!strcmp("DES", shipClass)) {
-        if (numberOfShip + 1 <= (*shipCounter).getDES()) {
-            return true;
-        }
-        //(*shipCounter).desIn();
-    }
-    else if (!strcmp("CRU", shipClass)) {
-        if (numberOfShip + 1 <= (*shipCounter).getCRU()) {
-            return true;
-        }
-        //(*shipCounter).cruIn();
-    }
-
+    if ((!strcmp("CAR", shipClass) && numberOfShip + 1 <= (*shipCounter).getCAR()) ||
+        (!strcmp("BAT", shipClass) && numberOfShip + 1 <= (*shipCounter).getBAT()) ||
+        (!strcmp("DES", shipClass) && numberOfShip + 1 <= (*shipCounter).getDES()) ||
+        (!strcmp("CRU", shipClass) && numberOfShip + 1 <= (*shipCounter).getCRU()))
+        return true;
     return false;
 }
 
@@ -299,11 +279,11 @@ void print1(field board[], int BOARD_H, int BOARD_W) {
             else {
                 if (board[getIndex(xx, yy, BOARD_W)].radar == true) cout << "@";
                 else if (board[getIndex(xx, yy, BOARD_W)].engine == true) cout << "%";
-                else if (board[getIndex(xx, yy, BOARD_W)].cannon == true) cout << "!"; 
+                else if (board[getIndex(xx, yy, BOARD_W)].cannon == true) cout << "!";
                 else
                     cout << board[getIndex(xx, yy, BOARD_W)].state;
             }
-            
+
         }
         cout << endl;
     }
@@ -483,7 +463,7 @@ int main()
                     board[getIndex(y, x + i, boardSizeX)].direction = direction;
                     if (i == 1) board[getIndex(y, x + i, boardSizeX)].cannon = true;
                     if (i == 0) board[getIndex(y, x + i, boardSizeX)].radar = true;
-                    if (i == sizeOfShip-1) board[getIndex(y, x + i, boardSizeX)].engine = true;
+                    if (i == sizeOfShip - 1) board[getIndex(y, x + i, boardSizeX)].engine = true;
                 }
             }
             else if (direction == 'S') {
@@ -511,7 +491,7 @@ int main()
                     board[getIndex(y + i, x, boardSizeX)].direction = direction;
                     if (i == 1) board[getIndex(y + i, x, boardSizeX)].cannon = true;
                     if (i == 0) board[getIndex(y + i, x, boardSizeX)].radar = true;
-                    if (i == sizeOfShip - 1) board[getIndex(y+i, x, boardSizeX)].engine = true;
+                    if (i == sizeOfShip - 1) board[getIndex(y + i, x, boardSizeX)].engine = true;
                 }
             }
             else if (direction == 'E') {
@@ -965,15 +945,3 @@ int main()
 
 
 }
-
-
-// Uruchomienie programu: Ctrl + F5 lub menu Debugowanie > Uruchom bez debugowania
-// Debugowanie programu: F5 lub menu Debugowanie > Rozpocznij debugowanie
-
-// Porady dotyczące rozpoczynania pracy:
-//   1. Użyj okna Eksploratora rozwiązań, aby dodać pliki i zarządzać nimi
-//   2. Użyj okna programu Team Explorer, aby nawiązać połączenie z kontrolą źródła
-//   3. Użyj okna Dane wyjściowe, aby sprawdzić dane wyjściowe kompilacji i inne komunikaty
-//   4. Użyj okna Lista błędów, aby zobaczyć błędy
-//   5. Wybierz pozycję Projekt > Dodaj nowy element, aby utworzyć nowe pliki kodu, lub wybierz pozycję Projekt > Dodaj istniejący element, aby dodać istniejące pliku kodu do projektu
-//   6. Aby w przyszłości ponownie otworzyć ten projekt, przejdź do pozycji Plik > Otwórz > Projekt i wybierz plik sln
