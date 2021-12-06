@@ -6,4 +6,7 @@
     <LocalDebuggerCommandArguments>&lt;"C:\Users\pol14\source\repos\statki\Debug\in.txt"&gt;"C:\Users\pol14\source\repos\statki\Debug\out.txt"</LocalDebuggerCommandArguments>
     <LocalDebuggerWorkingDirectory>$(ProjectDir)</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
+  <PropertyGroup>
+    <ShowAllFiles>true</ShowAllFiles>
+  </PropertyGroup>
 </Project>

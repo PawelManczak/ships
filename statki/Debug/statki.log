@@ -1,2 +1,6 @@
-﻿  statki.cpp
+﻿  funkcje.cpp
+  placeShip.cpp
+  statki.cpp
+C:\Users\pol14\source\repos\statki\statki\statki.cpp(167,36): warning C4244: "inicjowanie": konwersja z "double" do "float", możliwa utrata danych
+  Generowanie kodu...
   statki.vcxproj -> C:\Users\pol14\source\repos\statki\Debug\statki.exe

@@ -45,7 +45,6 @@ int main()
 
     while (cin >> command && error == false) {
 
-
         if (strcmp("PLACE_SHIP", command) == 0) {
             cin >> x >> y >> direction >> numberOfShip >> shipClass;
             int sizeOfShip = getSizeOfShip(shipClass);
@@ -104,11 +103,10 @@ int main()
                 cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": ALL SHIPS OF THE CLASS ALREADY SET" << endl;
                 break;
             }
+
                 currentPlayer == 'A' ? incrementShipCounter(shipClass, &shipCounterA) :  incrementShipCounter(shipClass, &shipCounterB);
-               
             }
           
-
         else if (strcmp("PRINT", command) == 0) {
             cin >> mode;
             if (mode == '0') {
@@ -132,7 +130,6 @@ int main()
                 cout << "INVALID OPERATION \"[playerA] \": THE OTHER PLAYER EXPECTED" << endl;
                 break;
             }
-
         }
         else if (strcmp("[playerB]", command) == 0) {
             md.changePlayer(maxAmountOfShipB);
@@ -143,13 +140,11 @@ int main()
                 cout << "INVALID OPERATION \"[playerB] \": THE OTHER PLAYER EXPECTED" << endl;
                 break;
             }
-
         }
         else if (!strcmp("SHOOT", command)) {
             if (extendedShips) cin >> numberOfShip >> shipClass;
-
             cin >> y >> x;
-
+           
             if (!ifAllShipsAlreadySet(shipCounterA, maxAmountOfShipA) || !ifAllShipsAlreadySet(shipCounterB, maxAmountOfShipB)) {
                 cout << "INVALID OPERATION \"SHOOT " << y << " " << x << "\": NOT ALL SHIPS PLACED" << endl;
                 break;
@@ -184,7 +179,6 @@ int main()
                     }
                 }
                 shoot(board, x, y, boardSizeX);
-
             }
             else {
                 cout << "INVALID OPERATION \"SHOOT " << y << " " << x << "\": FIELD DOES NOT EXIST" << endl;
@@ -252,40 +246,17 @@ int main()
             }
 
 
-            {
-                if (playerTemp == 'B') {
-
-                    //czy pokolej stawiane
-                    if (ifShipAlreadyPresent(shipClass, numberOfShip, &shipCounterB)) {
-                        cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": SHIP ALREADY PRESENT" << endl;
-                        error = true;
-                        break;
-                    }
-                    //czy mamskymalna ilosc
-                    if (ifAllShipOfTheClassAlreadySet(shipCounterB, shipClass, maxAmountOfShipB)) {
-                        cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": ALL SHIPS OF THE CLASS ALREADY SET" << endl;
-                        error = true;
-                        break;
-                    }
-                    incrementShipCounter(shipClass, &shipCounterB);
+                if ((playerTemp == 'B' && ifShipAlreadyPresent(shipClass, numberOfShip, &shipCounterB) == true) ||
+                    (playerTemp == 'A' && ifShipAlreadyPresent(shipClass, numberOfShip, &shipCounterA) == true)) {
+                      cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": SHIP ALREADY PRESENT" << endl;
+                      break;
                 }
-                else { //player a
-
-                //czy pokolej stawiane
-                    if (ifShipAlreadyPresent(shipClass, numberOfShip, &shipCounterA)) {
-                        cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": SHIP ALREADY PRESENT" << endl;
-                        error = true;
-                        break;
-                    }
-                    //czy mamskymalna ilosc
-                    if (ifAllShipOfTheClassAlreadySet(shipCounterA, shipClass, maxAmountOfShipA)) {
-                        cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": ALL SHIPS OF THE CLASS ALREADY SET" << endl;
-                        error = true;
-                        break;
-                    }
-                    incrementShipCounter(shipClass, &shipCounterA);
+                if ((playerTemp == 'B' && ifAllShipOfTheClassAlreadySet(shipCounterB, shipClass, maxAmountOfShipB) == true) ||
+                    (playerTemp == 'A' && ifAllShipOfTheClassAlreadySet(shipCounterA, shipClass, maxAmountOfShipA) == true)) {
+                    cout << "INVALID OPERATION \"PLACE_SHIP " << x << " " << y << " " << direction << " " << numberOfShip << " " << shipClass << "\": ALL SHIPS OF THE CLASS ALREADY SET" << endl;
+                    break;
                 }
-            }
+                playerTemp == 'A' ? incrementShipCounter(shipClass, &shipCounterA) : incrementShipCounter(shipClass, &shipCounterB);
         }
         else if (!strcmp("NEXT_PLAYER", command)) {
             cin >> currentPlayer;
@@ -309,7 +280,7 @@ int main()
                 cout << "INVALID OPERATION \"MOVE " << numberOfShip << " " << shipClass << " " << direction << "\": SHIP MOVED ALREADY" << endl;
                 break;
             }
-            field* copy = new field[boardSizeX * boardSizeY];;
+            field* copy = new field[boardSizeX * boardSizeY];
 
 
             for (int yy = 0; yy < 21; yy++) {
@@ -334,25 +305,25 @@ int main()
                         if (copy[getIndex(xx, yy, boardSizeX)].numberI == numberOfShip && !strcmp(copy[getIndex(xx, yy, boardSizeX)].classOfShip, shipClass) && copy[getIndex(xx, yy, boardSizeX)].player == currentPlayer) {
                             if (copy[getIndex(xx, yy, boardSizeX)].state == 'j') {
                                 if (copy[getIndex(xx, yy, boardSizeX)].direction == 'N') {
-                                    if (isSbAround(board, xx, yy - 1, currentPlayer, boardSizeY, boardSizeX)) tooCloseError = true;
+                                    if (isSbAround(board, xx, yy - 1, currentPlayer, boardSizeX)) tooCloseError = true;
                                     if (yy - 1 < 0 || xx < 0 || xx> SIZEX || yy - 1 > SIZEY) wentFromBoardError = true;
                                     board[getIndex(xx, yy - 1, boardSizeX)] = copy[getIndex(xx, yy, boardSizeX)];
                                     board[getIndex(xx, yy - 1, boardSizeX)].state = '+';
                                 }
                                 else if (copy[getIndex(xx, yy, boardSizeX)].direction == 'W') {
-                                    if (isSbAround(board, xx - 1, yy, currentPlayer, boardSizeY, boardSizeX)) tooCloseError = true;
+                                    if (isSbAround(board, xx - 1, yy, currentPlayer, boardSizeX)) tooCloseError = true;
                                     if (yy <0 || xx - 1 < 0 || xx - 1 > SIZEX || yy>SIZEY) wentFromBoardError = true;
                                     board[getIndex(xx - 1, yy, boardSizeX)] = copy[getIndex(xx, yy, boardSizeX)];
                                     board[getIndex(xx - 1, yy, boardSizeX)].state = '+';
                                 }
                                 else if (copy[getIndex(xx, yy, boardSizeX)].direction == 'E') {
-                                    if (isSbAround(board, xx + 1, yy, currentPlayer, boardSizeY, boardSizeX)) tooCloseError = true;
+                                    if (isSbAround(board, xx + 1, yy, currentPlayer, boardSizeX)) tooCloseError = true;
                                     if (yy <0 || xx + 1 < 0 || xx + 1 > SIZEX || yy>SIZEY) wentFromBoardError = true;
                                     board[getIndex(xx + 1, yy, boardSizeX)] = copy[getIndex(xx, yy, boardSizeX)];
                                     board[getIndex(xx + 1, yy, boardSizeX)].state = '+';
                                 }
                                 else if (copy[getIndex(xx, yy, boardSizeX)].direction == 'S') {
-                                    if (isSbAround(board, xx, yy + 1, currentPlayer, boardSizeY, boardSizeX)) tooCloseError = true;
+                                    if (isSbAround(board, xx, yy + 1, currentPlayer, boardSizeX)) tooCloseError = true;
                                     if (yy + 1 < 0 || xx < 0 || xx > SIZEX || yy + 1 > SIZEY) wentFromBoardError = true;
                                     board[getIndex(xx, yy + 1, boardSizeX)] = copy[getIndex(xx, yy, boardSizeX)];
                                     board[getIndex(xx, yy + 1, boardSizeX)].state = '+';
@@ -370,28 +341,28 @@ int main()
                         if (copy[getIndex(xx, yy, boardSizeX)].numberI == numberOfShip && !strcmp(copy[getIndex(xx, yy, boardSizeX)].classOfShip, shipClass) && copy[getIndex(xx, yy, boardSizeX)].player == currentPlayer) {
                             for (int i = 0; i < getSizeOfShip(shipClass); i++) {
                                 if (copy[getIndex(xx, yy, boardSizeX)].direction == 'N') {
-                                    if (isSbAround(board, xx - i, yy, currentPlayer, boardSizeY, boardSizeX)) tooCloseError = true;
+                                    if (isSbAround(board, xx - i, yy, currentPlayer, boardSizeX)) tooCloseError = true;
                                     if (yy < 0 || xx - i < 0 || xx - i > SIZEX || yy > SIZEY) wentFromBoardError = true;
                                     board[getIndex(xx - i, yy, boardSizeX)] = copy[getIndex(xx, yy, boardSizeX)];
                                     board[getIndex(xx - i, yy, boardSizeX)].direction = 'E';
                                     board[getIndex(xx - i, yy, boardSizeX)].state = '+';
                                 }
                                 else if (copy[getIndex(xx, yy, boardSizeX)].direction == 'E') {
-                                    if (isSbAround(board, xx - 1, yy + i, currentPlayer, boardSizeY, boardSizeX)) tooCloseError = true;
+                                    if (isSbAround(board, xx - 1, yy + i, currentPlayer, boardSizeX)) tooCloseError = true;
                                     if (yy + i < 0 || xx - 1 < 0 || xx - 1 > SIZEX || yy + i > SIZEY) wentFromBoardError = true;
                                     board[getIndex(xx - 1, yy + i, boardSizeX)] = copy[getIndex(xx, yy, boardSizeX)];
                                     board[getIndex(xx - 1, yy + i, boardSizeX)].direction = 'S';
                                     board[getIndex(xx - 1, yy + i, boardSizeX)].state = '+';
                                 }
                                 else if (copy[getIndex(xx, yy, boardSizeX)].direction == 'S') {
-                                    if (isSbAround(board, xx + 1 + i, yy, currentPlayer, boardSizeY, boardSizeX)) tooCloseError = true;
+                                    if (isSbAround(board, xx + 1 + i, yy, currentPlayer, boardSizeX)) tooCloseError = true;
                                     if (yy< 0 || xx + 1 + i < 0 || xx + 1 + i > SIZEX || yy > SIZEY) wentFromBoardError = true;
                                     board[getIndex(xx + 1 + i, yy, boardSizeX)] = copy[getIndex(xx, yy, boardSizeX)];
                                     board[getIndex(xx + 1 + i, yy, boardSizeX)].direction = 'W';
                                     board[getIndex(xx + 1 + i, yy, boardSizeX)].state = '+';
                                 }
                                 else if (copy[getIndex(xx, yy, boardSizeX)].direction == 'W') {
-                                    if (isSbAround(board, xx, yy - i + 1, currentPlayer, boardSizeY, boardSizeX)) tooCloseError = true;
+                                    if (isSbAround(board, xx, yy - i + 1, currentPlayer, boardSizeX)) tooCloseError = true;
                                     if (yy - i + 1 < 0 || xx < 0 || xx > SIZEX || yy - i + 1 > SIZEY) wentFromBoardError = true;
                                     board[getIndex(xx, yy - i + 1, boardSizeX)] = copy[getIndex(xx, yy, boardSizeX)];
                                     board[getIndex(xx, yy - i + 1, boardSizeX)].direction = 'N';
@@ -411,28 +382,28 @@ int main()
                         if (copy[getIndex(xx, yy, boardSizeX)].numberI == numberOfShip && !strcmp(copy[getIndex(xx, yy, boardSizeX)].classOfShip, shipClass) && copy[getIndex(xx, yy, boardSizeX)].player == currentPlayer) {
                             for (int i = 0; i < getSizeOfShip(shipClass); i++) {
                                 if (copy[getIndex(xx, yy, boardSizeX)].direction == 'N') {
-                                    if (isSbAround(board, xx + 1, yy, currentPlayer, boardSizeY, boardSizeX)) tooCloseError = true;
+                                    if (isSbAround(board, xx + 1, yy, currentPlayer, boardSizeX)) tooCloseError = true;
                                     if (yy < 0 || xx + i< 0 || xx + i> SIZEX || yy > SIZEY) wentFromBoardError = true;
                                     board[getIndex(xx + i, yy, boardSizeX)] = copy[getIndex(xx, yy, boardSizeX)];
                                     board[getIndex(xx + i, yy, boardSizeX)].direction = 'W';
                                     board[getIndex(xx + i, yy, boardSizeX)].state = '+';
                                 }
                                 if (copy[getIndex(xx, yy, boardSizeX)].direction == 'W') {
-                                    if (isSbAround(board, xx + 1, yy - i, currentPlayer, boardSizeY, boardSizeX)) tooCloseError = true;
+                                    if (isSbAround(board, xx + 1, yy - i, currentPlayer, boardSizeX)) tooCloseError = true;
                                     if (yy - i < 0 || xx + 1 < 0 || xx + 1 > SIZEX || yy - i > SIZEY) wentFromBoardError = true;
                                     board[getIndex(xx + 1, yy - i, boardSizeX)] = copy[getIndex(xx, yy, boardSizeX)];
                                     board[getIndex(xx + 1, yy - i, boardSizeX)].direction = 'N';
                                     board[getIndex(xx + 1, yy - i, boardSizeX)].state = '+';
                                 }//_________________________________________ TO NIE DZIALA WGL
                                 if (copy[getIndex(xx, yy, boardSizeX)].direction == 'S') {
-                                    if (isSbAround(board, xx + 1, yy - i, currentPlayer, boardSizeY, boardSizeX)) tooCloseError = true;
+                                    if (isSbAround(board, xx + 1, yy - i, currentPlayer, boardSizeX)) tooCloseError = true;
                                     if (yy - i < 0 || xx + 1 < 0 || xx + 1 > SIZEX || yy - i > SIZEY) wentFromBoardError = true;
                                     board[getIndex(xx + 1, yy - i, boardSizeX)] = copy[getIndex(xx, yy, boardSizeX)];
                                     board[getIndex(xx + 1, yy - i, boardSizeX)].direction = 'N';
                                     board[getIndex(xx + 1, yy - i, boardSizeX)].state = '+';
                                 }
                                 if (copy[getIndex(xx, yy, boardSizeX)].direction == 'E') {
-                                    if (isSbAround(board, xx + 1, yy - i, currentPlayer, boardSizeY, boardSizeX)) tooCloseError = true;
+                                    if (isSbAround(board, xx + 1, yy - i, currentPlayer, boardSizeX)) tooCloseError = true;
                                     if (yy - i < 0 || xx + 1 < 0 || xx + 1 > SIZEX || yy - i > SIZEY) wentFromBoardError = true;
                                     board[getIndex(xx + 1, yy - i, boardSizeX)] = copy[getIndex(xx, yy, boardSizeX)];
                                     board[getIndex(xx + 1, yy - i, boardSizeX)].direction = 'N';

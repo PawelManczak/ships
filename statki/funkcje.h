@@ -100,7 +100,7 @@ bool isInRectangle(int x, int y, rectangle r);
 
 bool ifTooCloseToOthers(int x, int y, int i, int shipSize, field board[], int boardSizeX, int boardSizeY);
 
-bool isSbAround(field board[], int x, int y, char player, int BOARD_H, int BOARD_W);
+bool isSbAround(field board[], int x, int y, char player, int BOARD_W);
 
 int getIndexOfCannon(field board[], char classOfShip[], int nummberOfShip, char player, int BOARD_W, int BOARD_H, bool xy);
 

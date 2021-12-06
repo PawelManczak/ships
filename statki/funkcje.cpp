@@ -159,7 +159,7 @@ bool ifTooCloseToOthers(int x, int y, int i, int shipSize, field board[], int bo
     return false;
 }
 
-bool isSbAround(field board[], int x, int y, char player, int BOARD_H, int BOARD_W) {
+bool isSbAround(field board[], int x, int y, char player, int BOARD_W) {
 
     char oponent;
     player == 'A' ? oponent = 'B' : oponent = 'A';
@@ -201,7 +201,7 @@ void printPlayerPerspective(field board[], int boardSizeX, int boardSizeY, char 
             int range = getSizeOfShip(board[i].classOfShip);
             int x = i % boardSizeX;
             int y = i / boardSizeX;
-            float distance;
+            double distance;
 
             for (int yy = 0; yy < boardSizeY; yy++) {
                 for (int xx = 0; xx < boardSizeX; xx++) {
